@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.XianhuaDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.xianhua_name as xianhuaName
+        ,a.xianhua_photo as xianhuaPhoto
+        ,a.xianhua_types as xianhuaTypes
+        ,a.xianhua_kucun_number as xianhuaKucunNumber
+        ,a.xianhua_price as xianhuaPrice
+        ,a.xianhua_old_money as xianhuaOldMoney
+        ,a.xianhua_new_money as xianhuaNewMoney
+        ,a.xianhua_clicknum as xianhuaClicknum
+        ,a.shangxia_types as shangxiaTypes
+        ,a.xianhua_delete as xianhuaDelete
+        ,a.xianhua_content as xianhuaContent
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.XianhuaView" >
+        SELECT
+        <include refid="Base_Column_List" />
+
+--         级联表的字段
+
+        FROM xianhua  a
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.xianhuaName != '' and params.xianhuaName != null and params.xianhuaName != 'null' ">
+                and a.xianhua_name like CONCAT('%',#{params.xianhuaName},'%')
+            </if>
+            <if test="params.xianhuaTypes != null and params.xianhuaTypes != ''">
+                and a.xianhua_types = #{params.xianhuaTypes}
+            </if>
+            <if test="params.xianhuaKucunNumberStart != null and params.xianhuaKucunNumberStart != ''">
+                <![CDATA[  and a.xianhua_kucun_number >= #{params.xianhuaKucunNumberStart}   ]]>
+            </if>
+            <if test="params.xianhuaKucunNumberEnd != null and params.xianhuaKucunNumberEnd != ''">
+                <![CDATA[  and a.xianhua_kucun_number <= #{params.xianhuaKucunNumberEnd}   ]]>
+            </if>
+             <if test="params.xianhuaKucunNumber != null and params.xianhuaKucunNumber != ''">
+                and a.xianhua_kucun_number = #{params.xianhuaKucunNumber}
+             </if>
+            <if test="params.xianhuaPriceStart != null and params.xianhuaPriceStart != ''">
+                <![CDATA[  and a.xianhua_price >= #{params.xianhuaPriceStart}   ]]>
+            </if>
+            <if test="params.xianhuaPriceEnd != null and params.xianhuaPriceEnd != ''">
+                <![CDATA[  and a.xianhua_price <= #{params.xianhuaPriceEnd}   ]]>
+            </if>
+             <if test="params.xianhuaPrice != null and params.xianhuaPrice != ''">
+                and a.xianhua_price = #{params.xianhuaPrice}
+             </if>
+            <if test="params.xianhuaOldMoneyStart != null ">
+                <![CDATA[  and a.xianhua_old_money >= #{params.xianhuaOldMoneyStart}   ]]>
+            </if>
+            <if test="params.xianhuaOldMoneyEnd != null ">
+                <![CDATA[  and a.xianhua_old_money <= #{params.xianhuaOldMoneyEnd}   ]]>
+            </if>
+            <if test="params.xianhuaNewMoneyStart != null ">
+                <![CDATA[  and a.xianhua_new_money >= #{params.xianhuaNewMoneyStart}   ]]>
+            </if>
+            <if test="params.xianhuaNewMoneyEnd != null ">
+                <![CDATA[  and a.xianhua_new_money <= #{params.xianhuaNewMoneyEnd}   ]]>
+            </if>
+            <if test="params.xianhuaClicknumStart != null and params.xianhuaClicknumStart != ''">
+                <![CDATA[  and a.xianhua_clicknum >= #{params.xianhuaClicknumStart}   ]]>
+            </if>
+            <if test="params.xianhuaClicknumEnd != null and params.xianhuaClicknumEnd != ''">
+                <![CDATA[  and a.xianhua_clicknum <= #{params.xianhuaClicknumEnd}   ]]>
+            </if>
+             <if test="params.xianhuaClicknum != null and params.xianhuaClicknum != ''">
+                and a.xianhua_clicknum = #{params.xianhuaClicknum}
+             </if>
+            <if test="params.shangxiaTypes != null and params.shangxiaTypes != ''">
+                and a.shangxia_types = #{params.shangxiaTypes}
+            </if>
+            <if test="params.xianhuaDeleteStart != null and params.xianhuaDeleteStart != ''">
+                <![CDATA[  and a.xianhua_delete >= #{params.xianhuaDeleteStart}   ]]>
+            </if>
+            <if test="params.xianhuaDeleteEnd != null and params.xianhuaDeleteEnd != ''">
+                <![CDATA[  and a.xianhua_delete <= #{params.xianhuaDeleteEnd}   ]]>
+            </if>
+             <if test="params.xianhuaDelete != null and params.xianhuaDelete != ''">
+                and a.xianhua_delete = #{params.xianhuaDelete}
+             </if>
+            <if test=" params.xianhuaContent != '' and params.xianhuaContent != null and params.xianhuaContent != 'null' ">
+                and a.xianhua_content like CONCAT('%',#{params.xianhuaContent},'%')
+            </if>
+
+        </where>
+
+        order by a.${params.orderBy} desc 
+    </select>
+
+</mapper>
